@@ -156,7 +156,6 @@ Object 212 coordinates: (304, 240, 152, 229)
 
 ### 📎 Project Prerequisites
 
-####Class: CSI4533 - Traitement d'images 2024
-####Student Name : Céleste Duguay #300122287
 #### Email: cdugu093@uottawa.ca
+### Project done by Celeste Duguay
 
