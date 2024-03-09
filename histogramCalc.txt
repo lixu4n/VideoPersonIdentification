@@ -1,0 +1,148 @@
+import cv2
+import os
+import matplotlib.pyplot as plt
+
+class HistogramCalculatorSub:
+    def __init__(self):
+        pass
+
+    def calculate_histograms_from_location(self, image_folder_path, labels_file_path):
+        histograms = {}
+        try:
+            # Read the labels from the labels file
+            with open(labels_file_path, 'r') as file:
+                # Read the first 15 lines from the labels file
+                lines = [next(file) for _ in range(15)]
+
+            # Iterate over each line in the labels
+            for line in lines:
+                # Strip leading and trailing spaces from the line
+                line = line.strip()
+
+                # Split the line into image name, x, y, width, height
+                img_name, x, y, width, height = line.split(',')
+
+                # Load the image in grayscale mode using OpenCV
+                img_path = os.path.join(image_folder_path, img_name + '.png')
+                if not os.path.exists(img_path):
+                    print(f"Error: Image '{img_path}' not found.")
+                    continue
+
+                img_gray = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+                if img_gray is None:
+                    print(f"Error: Failed to load image '{img_path}'.")
+                    continue
+
+                # Extract the region of interest (ROI) based on the coordinates
+                roi_full = img_gray[int(y):int(y) + int(height), int(x):int(x) + int(width)]
+                roi_half = img_gray[int(y):int(y) + int(height), int(x):int(x) + int(width) // 2]
+
+                # Calculate the histogram for the grayscale ROI (full image)
+                hist_full = cv2.calcHist([roi_full], [0], None, [256], [0, 256])
+
+                # Calculate the histogram for the grayscale ROI (first half of the image)
+                hist_half = cv2.calcHist([roi_half], [0], None, [256], [0, 256])
+
+                # Add histograms to the dictionary with image name as key
+                if img_name not in histograms:
+                    histograms[img_name] = {'full': [], 'half': []}
+                histograms[img_name]['full'].append(hist_full)
+                histograms[img_name]['half'].append(hist_half)
+
+            return histograms
+
+        except Exception as e:
+            print("Error:", e)
+            return None
+
+
+
+
+image_folder_path = '/Users/lixuanguo/Uni/winter2024/CSI4355/projet/part1/subsequence_cam1'
+labels_file_path = '/Users/lixuanguo/Uni/winter2024/CSI4355/projet/part1/labels.txt'
+
+
+hist_calculator = HistogramCalculatorSub()
+histograms = hist_calculator.calculate_histograms_from_location(image_folder_path, labels_file_path)
+
+# Display histograms for the first 2 images and all their objects
+
+count = 0
+
+for img_name, hist_data in histograms.items():
+    print(f"Histograms for image {img_name}:")
+    for idx in range(len(hist_data['full'])):
+        print(f"Full image histograms for object {idx + 1}:")
+        plt.plot(hist_data['full'][idx])
+        plt.title(f'Histogram for Object {idx + 1} (Full image)')
+        plt.xlabel('Pixel Value')
+        plt.ylabel('Frequency')
+        plt.show()
+
+        print(f"Half image histograms for object {idx + 1}:")
+        plt.plot(hist_data['half'][idx])
+        plt.title(f'Histogram for Object {idx + 1} (Half image)')
+        plt.xlabel('Pixel Value')
+        plt.ylabel('Frequency')
+        plt.show()
+    count += 1
+    if count >= 2:
+        break
+
+        this is to dispaly..
+
+
+       import cv2
+import os
+
+class HistogramCalculatorSub:
+    def __init__(self):
+        pass
+
+    def calculate_histograms_from_location(self, image_folder_path, labels_file_path):
+        histograms = {}
+        try:
+            # Read the labels from the labels file
+            with open(labels_file_path, 'r') as file:
+                lines = file.readlines()
+
+            # Iterate over each line in the labels
+            for line in lines:
+                # Strip leading and trailing spaces from the line
+                line = line.strip()
+
+                # Split the line into image name, x, y, width, height
+                img_name, x, y, width, height = line.split(',')
+
+                # Load the image in grayscale mode using OpenCV
+                img_path = os.path.join(image_folder_path, img_name + '.png')
+                if not os.path.exists(img_path):
+                    print(f"Error: Image '{img_path}' not found.")
+                    continue
+
+                img_gray = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+                if img_gray is None:
+                    print(f"Error: Failed to load image '{img_path}'.")
+                    continue
+
+                # Extract the region of interest (ROI) based on the coordinates
+                roi_full = img_gray[int(y):int(y) + int(height), int(x):int(x) + int(width)]
+                roi_half = img_gray[int(y):int(y) + int(height), int(x):int(x) + int(width) // 2]
+
+                # Calculate the histogram for the grayscale ROI (full image)
+                hist_full = cv2.calcHist([roi_full], [0], None, [256], [0, 256])
+
+                # Calculate the histogram for the grayscale ROI (first half of the image)
+                hist_half = cv2.calcHist([roi_half], [0], None, [256], [0, 256])
+
+                # Add histograms to the dictionary with image name as key
+                if img_name not in histograms:
+                    histograms[img_name] = {'full': [], 'half': []}
+                histograms[img_name]['full'].append(hist_full)
+                histograms[img_name]['half'].append(hist_half)
+
+            return histograms
+
+        except Exception as e:
+            print("Error:", e)
+            return None
