@@ -21,6 +21,9 @@ In this first iteration of this proejct, we reduced to grayscale for all histogr
 <img src="https://opencv.org/wp-content/uploads/2019/02/opencv-logo-1.png" alt="OpenCV Logo" width="50"/> 
 
 
+The goal of this project is to epxlore the accuracy of the comparaison. Even if the results are not accruate it is a crucial first step to analyse the results and complete the following parts involving machine learning and ai. 
+
+
 --- 
 
 
